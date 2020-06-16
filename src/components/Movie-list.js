@@ -3,20 +3,22 @@ import Modal from 'react-modal'
 Modal.setAppElement('#root')
 
 const MovieList=()=> {
- const List = [
-        {id:1, nom:'Narcos',note:'Good'},
-        {id:2, nom:'Le loup de Wall Street',note:'Fair'},
-        {id:3, nom:'Les infiltrés',note:'Fair'},
-        {id:4, nom:'Les évadés',note:'Good'},
-        {id:5, nom:'Star Wars',note:'Fair'}]
-    
+
     
         const [filter,setFilter]=useState('')
+        const [list,setList]=useState([
+            {id:1, nom:'Narcos',note:'Good'},
+            {id:2, nom:'Le loup de Wall Street',note:'Fair'},
+            {id:3, nom:'Les infiltrés',note:'Fair'},
+            {id:4, nom:'Les évadés',note:'Good'},
+            {id:5, nom:'Star Wars',note:'Fair'}])
+
+            
         const [newTodo, setNewTodo] = useState({firstName:'', lastName:''})
 
         const [todos, setTodos] = useState([])
-        const[modalIsOpen,setModalIsOpen]=useState(false)
-
+        const [modalIsOpen,setmodalIsOpen] = useState(false)
+        const [filmData, setFilmData] =  useState({name:'',rating:''})
         
        const handleNewTodo=(e)=>{
             e.preventDefault()
@@ -45,36 +47,38 @@ const MovieList=()=> {
         {todos.map((name)=>{
          if(filter.length !==0){
           if(name.text.toLowerCase().startsWith(filter.toLowerCase())){
-          return<li className='todo'>Name: {newTodo.firstName} Rating:{newTodo.lastName} <button className='but' onClick={()=>setModalIsOpen(true)}> + </button>   </li>}
+          return<li className='todo'>Name: {newTodo.firstName} Rating:{newTodo.lastName}   </li>}
           else if(name.note.toLowerCase().startsWith(filter.toLowerCase())){
             return<li className='todo'>Name: {newTodo.firstName}, Rating: {newTodo.lastName}</li>}    
         else{return null }      }
-    return <li key={name.id} className='todo'> Name: {newTodo.firstName} Rating:{newTodo.lastName}<button className='but' onClick={()=>setModalIsOpen(true)}> + </button></li>           
+    return <li key={name.id} className='todo'> Name: {newTodo.firstName} Rating:{newTodo.lastName}</li>           
   })
   }
 
             {
-                List.map((name)=>{
+                list.map((name)=>{
                     if(filter.length !==0){
                         if(name.nom.toLowerCase().startsWith(filter.toLowerCase())){
-                        return<li className='todo'>Name: {name.nom}, Rating: {name.note} <button className='but' onClick={()=>setModalIsOpen(true)}> + </button>   </li>}
+                        return<li className='todo'>Name: {name.nom}, Rating: {name.note} </li>}
                         else if(name.note.toLowerCase().startsWith(filter.toLowerCase())){
                             return<li className='todo'>Name: {name.nom}, Rating: {name.note}</li>}    
                         else{return null }
                     }
-                return <li className='todo'>Name: {name.nom}, Rating: {name.note}  <button className='but' onClick={()=>setModalIsOpen(true)}> + </button></li>           
+                return <li className='todo' key={name.id}>Name: {name.nom}, Rating: {name.note} </li>           
                 })
                 }
-                <Modal
-        isOpen={modalIsOpen}
-        shouldCloseOnOverlayClick={false}
-        onRequestClose={()=>setModalIsOpen(false)}
-        >
-            <h2>modal titre</h2>
-            <div>
-            <button onClick={()=>setModalIsOpen(false)}>Close</button>
-            </div>
-        </Modal>
+                <div>
+     <Modal isOpen={modalIsOpen} onRequestClose={()=>{setmodalIsOpen(!modalIsOpen)}}>
+       <h1>film information</h1>
+       <label>Film Name</label>
+       <input type="text" onChange={(e)=>{setFilmData({...filmData,name:e.target.value})}} />
+       <label>Film rating</label>
+       <input type="text" onChange={(e)=>{setFilmData({...filmData,rating:e.target.value})}} />
+       <button onClick={()=>{setmodalIsOpen(!modalIsOpen)}}>Close</button>
+     </Modal>
+     <button onClick={()=>{setmodalIsOpen(!modalIsOpen)}}>Add film</button>
+
+   </div>
                 
         </ul>
         </React.Fragment>
